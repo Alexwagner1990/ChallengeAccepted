@@ -79,6 +79,11 @@ public class UserChallengeServiceImpl implements UserChallengeService {
 		return userChallengeRepo.findByChallengeId(cid);
 	}
 	
+	// gets all user challenge records for a single challenge (that have accepted, used to tally winners and losers)
+	public List<UserChallenge> getTheAcceptedChallengeAcceptorsForAChallenge(int cid) {
+		return userChallengeRepo.findByChallengeIdAndAccepted(cid);
+	}
+	
 	 // tally points for all user skill records for a challenge
 	//also changing this back to uid, have the ID don't need the username
     public UserSkill tallyUserSkillPointsForChallenge(Challenge challenge, int uid) {

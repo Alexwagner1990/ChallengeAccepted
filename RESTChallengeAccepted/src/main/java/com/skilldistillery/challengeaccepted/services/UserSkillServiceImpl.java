@@ -1,5 +1,6 @@
 package com.skilldistillery.challengeaccepted.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.skilldistillery.challengeaccepted.entities.Skill;
 import com.skilldistillery.challengeaccepted.entities.User;
+import com.skilldistillery.challengeaccepted.entities.UserChallenge;
+import com.skilldistillery.challengeaccepted.entities.UserChallengeUserDTO;
 import com.skilldistillery.challengeaccepted.entities.UserSkill;
 import com.skilldistillery.challengeaccepted.repositories.SkillRepository;
 import com.skilldistillery.challengeaccepted.repositories.UserRepository;
@@ -85,5 +88,31 @@ public class UserSkillServiceImpl implements UserSkillService {
 	public List<UserSkill> getUserSkillsByPoints() {
 		List<UserSkill> userskills = userSkillRepo.getUserSkillsByPoints();
 		return userskills;
+	}
+
+	@Override
+	public Boolean tallyResultsOfSkills(int skillId, List<UserChallengeUserDTO> userChallenges) {
+		for (UserChallengeUserDTO userChallenge : userChallenges) {
+			int userId = userChallenge.getUserId();
+			UserSkill dbUserSkill = userSkillRepo.findBySkillIdAndUserId(skillId, userId);
+				if (userChallenge.isAccepted() && userChallenge.isWon()) {
+					if(dbUserSkill.getPoints() < 10) {
+						dbUserSkill.setPoints(15);
+					}
+					else {		
+						dbUserSkill.setPoints(dbUserSkill.getPoints() + 5);					
+					}
+				}
+				else if (userChallenge.isAccepted() && !userChallenge.isWon()) {
+					if(dbUserSkill.getPoints() < 10) {
+						dbUserSkill.setPoints(12);	
+					}
+					else {
+						dbUserSkill.setPoints(dbUserSkill.getPoints() + 2);
+					}
+				}
+				userSkillRepo.saveAndFlush(dbUserSkill);
+			}
+		return true;
 	}
 }

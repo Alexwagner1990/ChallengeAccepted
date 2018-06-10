@@ -31,4 +31,7 @@ public interface UserChallengeService {
 	
 	// Changing back to uid, have the id already
 	public UserSkill tallyUserSkillPointsForChallenge(Challenge challenge, int uid);
+	
+	// get the acceptors for a challenge
+	public List<UserChallenge> getTheAcceptedChallengeAcceptorsForAChallenge(int cid);
 }

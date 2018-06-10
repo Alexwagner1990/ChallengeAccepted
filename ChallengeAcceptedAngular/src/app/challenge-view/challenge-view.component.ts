@@ -28,6 +28,7 @@ export class ChallengeViewComponent implements OnInit {
   challengers: UserChallenge[] = [];
   showAlreadyAcceptError = false;
   noWinners = false;
+  allAcceptorsOfAChallenge = [];
 
 
   acceptChallenge() {
@@ -100,8 +101,6 @@ export class ChallengeViewComponent implements OnInit {
     this.challengeService.showOneChallenge(this.route.snapshot.paramMap.get('id')).subscribe(
       data => {
         console.log(data);
-        // console.log(data.users);
-        // console.log(data.users[0]);
         this.displayChallenge = data;
         this.getAcceptedData(data.id);
       },
@@ -145,9 +144,10 @@ export class ChallengeViewComponent implements OnInit {
       this.userChallengeService.updateUserWinner(id, this.userIdList[index], this.displayChallenge).subscribe(
         data => {
           count++;
-          // if (count = this.userIdList.length) {
+          if (count = this.userIdList.length) {
             this.setChallengeToCompleted(this.displayChallenge.id);
-          // }
+            this.getUserChallengesOfChallenge();
+          }
         },
         error => {
           console.log(error);
@@ -157,6 +157,26 @@ export class ChallengeViewComponent implements OnInit {
    } else {
      this.noWinners = true;
    }
+  }
+
+  getUserChallengesOfChallenge() {
+    this.userChallengeService.allUserChallengesOfChallenge(this.displayChallenge).subscribe(
+      data => {
+        this.allAcceptorsOfAChallenge = data;
+        this.userChallengeService.tallyUserScores(this.allAcceptorsOfAChallenge, this.displayChallenge.skill.id).subscribe(
+          data2 => {
+            this.allAcceptorsOfAChallenge = [];
+            this.getChallengeData();
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   getLoggedInUser() {

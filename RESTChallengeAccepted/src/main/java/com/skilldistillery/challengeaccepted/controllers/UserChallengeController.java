@@ -113,10 +113,10 @@ public class UserChallengeController {
 	// update a user_challenge record based on user id and challenge id
 	// Changing this back to a uid, the user id at this point has been retrieved from DB
 	@RequestMapping(path="challenges/{cid}/user/{uid}", method=RequestMethod.PATCH)
-	public UserSkill updateUserChallengeRecord(HttpServletRequest req, HttpServletResponse res, @PathVariable int cid, 
+	public UserChallenge updateUserChallengeRecord(HttpServletRequest req, HttpServletResponse res, @PathVariable int cid, 
 			@PathVariable int uid, @RequestBody Challenge challenge, Principal principal) {
-		userChallengeService.updateUCRecord(cid, uid);
-		return userChallengeService.tallyUserSkillPointsForChallenge(challenge, uid);
+		return userChallengeService.updateUCRecord(cid, uid);
+//		return userChallengeService.tallyUserSkillPointsForChallenge(challenge, uid);
 	}
 
 
@@ -128,4 +128,13 @@ public class UserChallengeController {
 		
 		return userChallengeService.delete(ucid, username);
 	}
+	
+	//GET all the user_challenges of a challenge, so that each record can be updated after a win
+	@RequestMapping(path = "challenges/{id}/allUserChallenges", method = RequestMethod.GET)
+	public List<UserChallenge> getAllAcceptedUserChallenges(@PathVariable int id,
+			String username, Principal principal) {
+		return userChallengeService.getTheAcceptedChallengeAcceptorsForAChallenge(id);
+	}
+	
+
 }

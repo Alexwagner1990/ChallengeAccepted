@@ -3,6 +3,9 @@ package com.skilldistillery.challengeaccepted.services;
 import java.util.List;
 import java.util.Set;
 
+import com.skilldistillery.challengeaccepted.entities.User;
+import com.skilldistillery.challengeaccepted.entities.UserChallenge;
+import com.skilldistillery.challengeaccepted.entities.UserChallengeUserDTO;
 import com.skilldistillery.challengeaccepted.entities.UserSkill;
 
 public interface UserSkillService {
@@ -20,5 +23,7 @@ public interface UserSkillService {
 	public UserSkill getOneUserSkill(int sid, int uid);
 	
 	public List<UserSkill> getUserSkillsByPoints();
+	
+	public Boolean tallyResultsOfSkills(int skillId, List<UserChallengeUserDTO> userChallengesDTO);
 	
 }

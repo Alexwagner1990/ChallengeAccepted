@@ -6,6 +6,7 @@ import { throwError } from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { environment } from '../environments/environment';
+import { UserSkill } from './models/user-skill';
 
 
 @Injectable({
@@ -64,6 +65,21 @@ export class UserChallengeService {
     }
   }
 
+  allUserChallengesOfChallenge(challenge) {
+    // Get token
+    const token = this.authService.getToken();
+    // Send token as Authorization header (this is spring security convention for basic auth)
+    const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
+
+    if (this.authService.getToken()) {
+      return this.http.get<UserChallenge[]>(`${this.url}/challenges/${challenge.id}/allUserChallenges`, {headers}).pipe(
+        catchError((err: any) => {
+          console.log(err);
+          return throwError(err);
+        })
+      );
+    }
+  }
   updateUserWinner(cid, uid, challenge) {
     // Get token
     const token = this.authService.getToken();
@@ -104,6 +120,32 @@ export class UserChallengeService {
 
     if (this.authService.checkLogin()) {
       return this.http.delete<Boolean>(`${this.url}/challenges/accept/${id}`, {headers}).pipe(
+        catchError((err: any) => {
+          console.log(err);
+          return throwError(err);
+        })
+      );
+    }
+  }
+
+  tallyUserScores(userChallengeList, skillid) {
+    const token = this.authService.getToken();
+    // Send token as Authorization header (this is spring security convention for basic auth)
+    const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
+    console.log('IN TALLYUSERSCORES');
+    console.log(userChallengeList);
+    const userChallengeDTOList = [];
+    userChallengeList.forEach(element => {
+      const ucDTO = {
+        skillId: skillid,
+        userId: element.user.id,
+        accepted: element.accepted,
+        won: element.acceptorWon};
+        userChallengeDTOList.push(ucDTO);
+    });
+    console.log(userChallengeDTOList);
+    if (this.authService.checkLogin()) {
+      return this.http.patch<UserSkill[]>(`${this.url}/skills/${skillid}/tallyResults`, userChallengeDTOList, {headers}).pipe(
         catchError((err: any) => {
           console.log(err);
           return throwError(err);

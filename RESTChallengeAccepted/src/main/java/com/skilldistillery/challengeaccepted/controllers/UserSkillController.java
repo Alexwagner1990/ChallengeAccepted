@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.skilldistillery.challengeaccepted.entities.UserChallengeUserDTO;
 import com.skilldistillery.challengeaccepted.entities.UserSkill;
 import com.skilldistillery.challengeaccepted.services.UserSkillService;
 
@@ -84,5 +85,12 @@ public class UserSkillController {
 	@RequestMapping(path="userskills/{usid}", method=RequestMethod.DELETE)
 	public Boolean destory(HttpServletRequest req, HttpServletResponse res, @PathVariable int usid, Principal principal) {
 		return userSkillSvc.destroy(usid);
+	}
+	
+	// Update the points in the user-skill table of users who won or lost a challenge
+	@RequestMapping(path = "skills/{skillid}/tallyResults", method = RequestMethod.PATCH)
+	public Boolean tallyResultsOfChallenge(@PathVariable int skillid, @RequestBody List<UserChallengeUserDTO>userChallengesDTO, 
+			String username, Principal principal) {
+		return userSkillSvc.tallyResultsOfSkills(skillid, userChallengesDTO);
 	}
 }
