@@ -76,7 +76,7 @@ export class InboxComponent implements OnInit {
   sendMessage() {
     this.freshThread.receiver = this.receiver;
     const sender = new User();
-    sender.username = this.loggedInUser.username; // changed from AlexTheDestroyer
+    sender.username = this.loggedInUser.username;
     this.freshThread.sender = sender;
     console.log(this.freshThread);
     this.inboxService.submitReply(this.freshThread).subscribe(

@@ -105,7 +105,7 @@
           </div>
       </div>
       <hr>
-      <div *ngIf="displayChallenge.creator.id === testUser.id && (displayChallenge.status.id !== 3) && (displayChallenge.status.id !== 4)">
+      <div *ngIf="displayChallenge.creator.id === testUser.id && (displayChallenge.status.id === 1)">
           <button type="button" class="btn btn-primary btn-block" (click)="setChallengeToActive(displayChallenge.id)">Start Challenge</button>
           <button type="button" class="btn btn-primary btn-block" (click)="setChallengeToExpired(displayChallenge.id)">Cancel Challenge</button>
         </div>
@@ -114,8 +114,8 @@
           <div *ngIf="noWinners"><h5 style="color:red;">PICK AT LEAST ONE WINNER!</h5></div>
       </div>
         <div *ngIf="displayChallenge.creator.id !== testUser.id">
-            <button type="button" class="btn btn-primary btn-block" (click)="acceptChallenge()">Accept This Challenge</button>
-            <div *ngIf="showAlreadyAcceptError"><h5 style="color:red;">YOU'VE ALREADY ACCEPTED THIS CHALLENGE!</h5></div>
+            <button *ngIf="!hideAcceptButton" type="button" class="btn btn-primary btn-block" (click)="acceptChallenge()">Accept This Challenge</button>
+            <button *ngIf="hideAcceptButton" type="button" class="btn btn-block btn-primary" disabled>You've Accepted the Challenge! Get Ready to Compete!</button>
         </div>
 <!-- /content -->
 

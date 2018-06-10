@@ -14,4 +14,6 @@ public interface UserService {
 
 	User register(String json);
 	
+	public User isUserValid(String username);
+	
 }

@@ -1,7 +1,7 @@
 <!--Change the background class to alter background image, options are: benches, boots, buildings, city, metro -->
 <div id="background-wrapper" class="buildings" data-stellar-background-ratio="0.1">
   <!-- ======== @Region: #navigation ======== -->
-  <div id="navigation" class="wrapper">
+  <div *ngIf="checkLogin()" id="navigation" class="wrapper">
     <!--Hidden Header Region-->
     <div class="header-hidden collapse">
       <div class="header-hidden-inner container">
@@ -52,6 +52,13 @@
               </mat-select>
             </mat-form-field>
             <br>
+            <mat-form-field appearance="standard">
+              <mat-label>Invite a Friend!</mat-label>
+              <input matInput [(ngModel)]="invitedUser" placeholder="Username of Challenger">
+            </mat-form-field>
+            <div *ngIf="notValidUser">
+              <h5 style="color:red;">NOT A VALID USER, CHECK USERNAME SPELLING</h5>
+            </div>
           </div>
           <div class="col-md-4">
               <!-- <img id="my-img" src="http://dummyimage.com/100x100/000/fff" onmouseover="hover(this);" onmouseout="unhover(this);" /> -->

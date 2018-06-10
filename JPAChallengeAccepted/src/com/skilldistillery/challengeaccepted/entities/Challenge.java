@@ -29,6 +29,7 @@ public class Challenge {
 	private String name;
 	private String description;
 	private Integer wager;
+//	private Boolean visibleToPublic;
 	
 	@Column(name="min_number_of_challengers")
 	private int minNumberOfChallengers;
@@ -178,6 +179,36 @@ public class Challenge {
 	public int getId() {
 		return id;
 	}
+
+//	public Boolean getVisibleToPublic() {
+//		return visibleToPublic;
+//	}
+//
+//
+//	public void setVisibleToPublic(Boolean visibleToPublic) {
+//		this.visibleToPublic = visibleToPublic;
+//	}
+
+
+	public List<User> getAcceptors() {
+		return acceptors;
+	}
+
+
+	public void setAcceptors(List<User> acceptors) {
+		this.acceptors = acceptors;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public void setWager(Integer wager) {
+		this.wager = wager;
+	}
+
 
 	@Override
 	public String toString() {

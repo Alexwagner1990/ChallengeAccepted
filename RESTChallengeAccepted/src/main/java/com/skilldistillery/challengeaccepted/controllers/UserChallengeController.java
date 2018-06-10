@@ -136,5 +136,12 @@ public class UserChallengeController {
 		return userChallengeService.getTheAcceptedChallengeAcceptorsForAChallenge(id);
 	}
 	
+	//Creates a user_challenge object and persists to database when a user creates a challenge and invites another user
+	@RequestMapping(path = "challenges/invite", method = RequestMethod.PATCH)
+	public UserChallenge getAllAcceptedUserChallenges(@RequestBody UserChallengeDTO dto,
+			String username, Principal principal) {
+		return userChallengeService.createFromInvitation(dto);
+	}
+	
 
 }

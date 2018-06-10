@@ -38,19 +38,6 @@ public class UserController {
 		res.setStatus(404);
 		return null;
 	}
-
-//	NOT NEEDED W/ REGISTER METHOD
-//	// create new user
-//	@RequestMapping(path="users", method=RequestMethod.POST)
-//	public User createUser(HttpServletRequest req, HttpServletResponse res, @RequestBody User user, Principal principal) {
-//		User newUser = userServ.create(user, principal.getName());
-//		if (newUser != null) {
-//			res.setStatus(201);
-//			return newUser;
-//		}
-//		res.setStatus(404);
-//		return null;
-//	}
 	
 	// update existing user w/ user id
 	@RequestMapping(path="users", method=RequestMethod.PATCH)
@@ -69,6 +56,12 @@ public class UserController {
 	public Boolean deleteUser(Principal principal) {
 		System.out.println("*******************************");
 		return userServ.delete(principal.getName());
+	}
+	
+	//checks that a user is valid
+	@RequestMapping(path="users/{username}/valid", method=RequestMethod.GET)
+	public User isUserValid(@PathVariable String username, Principal principal) {
+		return userServ.isUserValid(username);
 	}
 	
 }

@@ -84,4 +84,5 @@ public class MessageController {
 		
 		return messageServ.destroy(principal.getName(), mid);
 	}
+	
 }

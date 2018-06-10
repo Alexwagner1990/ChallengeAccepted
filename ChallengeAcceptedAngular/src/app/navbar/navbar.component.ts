@@ -1,3 +1,4 @@
+import { UserChallengeService } from './../user-challenge.service';
 import { UserService } from './../user.service';
 import { AuthService } from './../auth.service';
 import { SkillService } from './../skill.service';
@@ -21,6 +22,8 @@ export class NavbarComponent implements OnInit {
   challenge: Challenge = new Challenge();
   tags: Tag[] = [];
   skills: Skill[] = [];
+  invitedUser: String;
+  notValidUser = false;
 
   getTags() {
     this.tagService.getAllTags().subscribe(
@@ -46,17 +49,67 @@ export class NavbarComponent implements OnInit {
 
   createChallenge(challenge) {
     console.log(challenge);
-    this.userService.findUserByUsername(this.authService.getLoggedInUserName()).subscribe(
-      data => {
-        this.challengeService.create(challenge, data.id).subscribe(
-        userData => this.router.navigateByUrl('challview/mychallenge/' + userData.id),
-        err => throwError(err)
+    if (!this.invitedUser) {
+      this.userService.findUserByUsername(this.authService.getLoggedInUserName()).subscribe(
+        data => {
+          this.challengeService.create(challenge, data.id).subscribe(
+          userData => {
+            this.router.navigateByUrl('challview/mychallenge/' + userData.id);
+            this.invitedUser = null;
+          },
+          err => throwError(err)
+          );
+        },
+          error => {
+            console.log(error);
+          }
+      );
+    } else {
+        this.userService.isUserValid(this.invitedUser).subscribe(
+          userExists => {
+            if (userExists) {
+            console.log('USER EXISTS!');
+            console.log(userExists);
+              this.notValidUser = false;
+              this.userService.findUserByUsername(this.authService.getLoggedInUserName()).subscribe(
+                data => {
+                  this.challengeService.create(challenge, data.id).subscribe(
+                  userData => {
+                    const ucDTO = {
+                      challengeId: userData.id,
+                      acceptorId: userExists.id
+                    };
+                    console.log(ucDTO);
+                    this.userChallengeService.createUserChallengeWhenUserInvited(ucDTO).subscribe(
+                      completeChallenge => {
+                        this.router.navigateByUrl('challview/mychallenge/' + userData.id);
+                        this.invitedUser = null;
+                      },
+                      notCompleteChallenge => {
+                        console.log(notCompleteChallenge);
+                        this.invitedUser = null;
+                      }
+                    );
+                  },
+                  err => throwError(err)
+                  );
+                },
+                  error => {
+                    console.log(error);
+                  }
+              );
+            } else {
+              console.log('USER DOESNT EXIST!');
+              this.invitedUser = null;
+              this.notValidUser = true;
+            }
+
+          },
+          error => {
+            console.log(error);
+          }
         );
-      },
-      error => {
-        console.log(error);
       }
-    );
 
   }
 
@@ -84,7 +137,8 @@ export class NavbarComponent implements OnInit {
               private tagService: TagsService,
               private skillService: SkillService,
               private authService: AuthService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private userChallengeService: UserChallengeService) { }
 
   ngOnInit() {
     this.getSkills();

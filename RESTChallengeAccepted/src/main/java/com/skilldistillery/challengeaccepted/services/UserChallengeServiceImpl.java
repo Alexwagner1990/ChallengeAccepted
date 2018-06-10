@@ -84,46 +84,29 @@ public class UserChallengeServiceImpl implements UserChallengeService {
 		return userChallengeRepo.findByChallengeIdAndAccepted(cid);
 	}
 	
+	// DEPRECIATED, see userskillserviceimpl for tallying results
 	 // tally points for all user skill records for a challenge
 	//also changing this back to uid, have the ID don't need the username
-    public UserSkill tallyUserSkillPointsForChallenge(Challenge challenge, int uid) {
-    	User u = userRepo.findById(uid).get();
-    	System.out.println("Challenge: " + challenge.getId());
-    	System.out.println("User: " + u.getId());
-        UserChallenge managedUserChallenge = userChallengeRepo.findByUserIdAndChallengeId(u.getId(), challenge.getId());
-        int newPoints = 0;
-            if (managedUserChallenge.isAcceptorWon()) {
-                newPoints = 5;    
-            }
-            else if (!managedUserChallenge.isAcceptorWon() && managedUserChallenge.isAccepted()){
-                newPoints = 2;
-            }
-            else {
-                newPoints = 0;
-            }
-            UserSkill uSkill = userSkillRepo.findBySkillIdAndUserId(challenge.getSkill().getId(), managedUserChallenge.getUser().getId());
-            uSkillImpl.update(uSkill, newPoints);
-        return uSkill;
-    } 
-//=======  			OLD ONE, WORKS.
-//	// tally points for all user skill records for a challenge
-//	public UserSkill tallyUserSkillPointsForChallenge(Challenge challenge, int uid) {
-//		UserChallenge managedUserChallenge = userChallengeRepo.findByUserIdAndChallengeId(challenge.getId(), uid);
-//		int newPoints = 0;
-//			if (managedUserChallenge.isAcceptorWon()) {
-//				newPoints = 5;	
-//			}
-//			else if (!managedUserChallenge.isAcceptorWon() && managedUserChallenge.isAccepted()){
-//				newPoints = 2;
-//			}
-//			else {
-//				newPoints = 0;
-//			}
-//			UserSkill uSkill = userSkillRepo.findBySkillIdAndUserId(challenge.getSkill().getId(), managedUserChallenge.getUser().getId());
-//			uSkillImpl.update(uSkill, newPoints);
-//		return uSkill;
-//	}
-//>>>>>>>
+//    public UserSkill tallyUserSkillPointsForChallenge(Challenge challenge, int uid) {
+//    	User u = userRepo.findById(uid).get();
+//    	System.out.println("Challenge: " + challenge.getId());
+//    	System.out.println("User: " + u.getId());
+//        UserChallenge managedUserChallenge = userChallengeRepo.findByUserIdAndChallengeId(u.getId(), challenge.getId());
+//        int newPoints = 0;
+//            if (managedUserChallenge.isAcceptorWon()) {
+//                newPoints = 5;    
+//            }
+//            else if (!managedUserChallenge.isAcceptorWon() && managedUserChallenge.isAccepted()){
+//                newPoints = 2;
+//            }
+//            else {
+//                newPoints = 0;
+//            }
+//            UserSkill uSkill = userSkillRepo.findBySkillIdAndUserId(challenge.getSkill().getId(), managedUserChallenge.getUser().getId());
+//            uSkillImpl.update(uSkill, newPoints);
+//        return uSkill;
+//    } 
+
 
 	public List<UserChallenge> challengesUserHasParticipatedIn(String username) {
 		User u = userRepo.findByUsername(username);
@@ -133,11 +116,10 @@ public class UserChallengeServiceImpl implements UserChallengeService {
 	@Override
 	//changed from taking a username to taking a user ID - the logged in user ID is previously grabbed from DB
 	public UserChallenge checkIfUserHasAcceptedChallenge(int cid, int aid) {
-		System.out.println(aid);
 		User u = userRepo.findById(aid).get();
-//		System.out.println(u);
 		UserChallenge uc = userChallengeRepo.findByUserIdAndChallengeId(u.getId(), cid);
-//		System.out.println(uc);
+		uc.setAccepted(true);
+		userChallengeRepo.saveAndFlush(uc);
 		return uc;
 	}
 	
@@ -146,6 +128,19 @@ public class UserChallengeServiceImpl implements UserChallengeService {
 		User u = userRepo.findById(uid).get();
 		UserChallenge uc = userChallengeRepo.findByUserIdAndChallengeId(u.getId(), cid);
 		uc.setAcceptorWon(true);
+		userChallengeRepo.saveAndFlush(uc);
+		return uc;
+	}
+
+	@Override
+	public UserChallenge createFromInvitation(UserChallengeDTO dto) {
+		UserChallenge uc = new UserChallenge();
+		User user = userRepo.findById(dto.getAcceptorId()).get();
+		Challenge challenge = challengeRepository.findById(dto.getChallengeId()).get();
+		uc.setAccepted(false);
+		uc.setAcceptorWon(false);
+		uc.setChallenge(challenge);
+		uc.setUser(user);
 		userChallengeRepo.saveAndFlush(uc);
 		return uc;
 	}

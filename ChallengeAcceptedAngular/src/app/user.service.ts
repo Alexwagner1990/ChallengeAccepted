@@ -44,6 +44,21 @@ export class UserService {
       })
     );
   }
+
+  isUserValid(username) {
+    const token = this.authService.getToken();
+    // Send token as Authorization header (this is spring security convention for basic auth)
+    const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
+    if (this.authService.checkLogin()) {
+      return this.http.get<User>(`${this.url}/users/${username}/valid`, {headers}).pipe(
+        catchError((err: any) => {
+          console.log(err);
+          return throwError(err);
+        })
+      );
+    }
+  }
+
   constructor(private http: HttpClient,
               private authService: AuthService) { }
 

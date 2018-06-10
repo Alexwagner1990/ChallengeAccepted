@@ -30,8 +30,11 @@ public interface UserChallengeService {
 	public UserChallenge updateUCRecord(int cid, int uid);
 	
 	// Changing back to uid, have the id already
-	public UserSkill tallyUserSkillPointsForChallenge(Challenge challenge, int uid);
+//	public UserSkill tallyUserSkillPointsForChallenge(Challenge challenge, int uid);
 	
 	// get the acceptors for a challenge
 	public List<UserChallenge> getTheAcceptedChallengeAcceptorsForAChallenge(int cid);
+	
+	// This creation method is for when a user sends a challenge to a specific person
+	public UserChallenge createFromInvitation(UserChallengeDTO dto);
 }

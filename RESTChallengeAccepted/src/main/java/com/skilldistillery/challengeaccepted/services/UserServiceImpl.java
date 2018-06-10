@@ -2,6 +2,7 @@ package com.skilldistillery.challengeaccepted.services;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -82,6 +83,16 @@ public class UserServiceImpl implements UserService{
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	public User isUserValid(String username) {
+		try {
+			User u = userRepo.findByUsername(username);
+			return u;
+		} catch (EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

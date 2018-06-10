@@ -29,6 +29,7 @@ export class ChallengeViewComponent implements OnInit {
   showAlreadyAcceptError = false;
   noWinners = false;
   allAcceptorsOfAChallenge = [];
+  hideAcceptButton = false;
 
 
   acceptChallenge() {
@@ -38,12 +39,14 @@ export class ChallengeViewComponent implements OnInit {
     this.userChallengeService.hasUserAcceptedChallenge(dto).subscribe(
       data => {
         console.log(data);
-        this.showAlreadyAcceptError = true;
+        this.getChallengeData();
+        this.hideAcceptButton = true;
       },
       error => {
         this.userChallengeService.acceptingAMarketChallenge(dto).subscribe(
           data2 => {
             this.getChallengeData();
+            this.hideAcceptButton = true;
           },
           error2 => {
             console.log(error2);
