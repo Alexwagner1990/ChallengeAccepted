@@ -29,6 +29,7 @@ export class UserProfileComponent implements OnInit {
   test = '';
   loadedUser: User;
   userSkills: UserSkill[] = [];
+  invitedChallenges = [];
   pendingChallenges = [];
   activeChallenges = [];
   challengesUserHasCompleted = [];
@@ -174,27 +175,6 @@ export class UserProfileComponent implements OnInit {
       }
     );
 
-    // sendMessage() {
-    //   this.freshThread.receiver = this.receiver;
-    //   const sender = new User();
-    //   sender.username = this.loggedInUser.username;
-    //   this.freshThread.sender = sender;
-    //   console.log(this.freshThread);
-    //   this.inboxService.submitReply(this.freshThread).subscribe(
-    //     data => {
-    //       this.errorMessage = false;
-    //       this.freshThread = new Message();
-    //       this.receiver = new User();
-    //       this.getAllMessageHeadsOfUser();
-    //     },
-    //     error => {
-    //       console.log(error);
-    //       this.freshThread = new Message();
-    //       this.receiver = new User();
-    //       this.errorMessage = true;
-    //     }
-    //   );
-    // }
   }
 
   constructor(private userChallengeService: UserChallengeService,

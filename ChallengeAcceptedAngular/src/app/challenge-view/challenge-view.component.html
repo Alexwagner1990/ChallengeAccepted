@@ -113,7 +113,7 @@
           <button type="button" class="btn btn-primary btn-block" (click)="updateWholeUserList(displayChallenge.id, displayChallenge)">Tally Results!</button>
           <div *ngIf="noWinners"><h5 style="color:red;">PICK AT LEAST ONE WINNER!</h5></div>
       </div>
-        <div *ngIf="displayChallenge.creator.id !== testUser.id">
+        <div *ngIf="displayChallenge.creator.id !== testUser.id && displayChallenge.status.id === 1">
             <button *ngIf="!hideAcceptButton" type="button" class="btn btn-primary btn-block" (click)="acceptChallenge()">Accept This Challenge</button>
             <button *ngIf="hideAcceptButton" type="button" class="btn btn-block btn-primary" disabled>You've Accepted the Challenge! Get Ready to Compete!</button>
         </div>
