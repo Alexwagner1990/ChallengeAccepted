@@ -31,7 +31,7 @@ public class AuthController {
 		if (u == null) {
 			res.setStatus(400);
 		}
-		
+
 		return u;
 	}
 	

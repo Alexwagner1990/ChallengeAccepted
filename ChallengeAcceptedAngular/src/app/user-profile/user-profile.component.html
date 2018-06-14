@@ -4,10 +4,10 @@
     <!---->
     <div class="showcase block block-border-bottom-grey">
       <div class="container">
-        <h2 class="block-title">
+        <h1 align="center">
           {{loadedUser.username}}
-        </h2>
-        <h4>Location: {{loadedUser.location}}</h4>
+        </h1>
+        <h4 align="center">Location: {{loadedUser.location}}</h4>
          <!--Message user div -->
         <div *ngIf="loadedUser.id !== loggedInUser.id">
           <form>

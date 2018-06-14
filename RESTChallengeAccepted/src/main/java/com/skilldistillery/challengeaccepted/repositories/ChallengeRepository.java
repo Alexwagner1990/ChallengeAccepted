@@ -21,4 +21,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Integer> {
 //				AND s.id = 1
 	@Query("SELECT c FROM Challenge c JOIN UserChallenge uc ON uc.challenge.id = c.id JOIN Status s ON c.status.id = s.id WHERE uc.user.id = :uid AND s.id = :sid")
 	public Set<Challenge> getChallengesByUserIdAndStatus(@Param("uid") int uid, @Param("sid") int sid); 
+	
+	public Set<Challenge> findByTagsId(int id);
 }

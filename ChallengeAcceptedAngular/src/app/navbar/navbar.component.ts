@@ -132,6 +132,10 @@ export class NavbarComponent implements OnInit {
 
   }
 
+  search() {
+    this.router.navigateByUrl(`search`);
+  }
+
   constructor(private challengeService: ChallengeService,
               private router: Router,
               private tagService: TagsService,

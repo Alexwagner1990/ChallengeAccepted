@@ -9,7 +9,7 @@
         <form>
           To (Username): <input type="text" name="receiver" [(ngModel)]="receiver.username">
           Message: <input type="text" name="threadMessage" [(ngModel)]="freshThread.message">
-          <button (click)="sendMessage()">SEND</button>
+          <button type="button" class="btn btn-primary" (click)="sendMessage()">Send</button>
         </form>
         <div *ngIf="errorMessage"><h5 style="color:red;">DIDN'T SEND MESSAGE, CHECK USERNAME SPELLING</h5></div>
       </div>
@@ -26,18 +26,18 @@
             </thead>
             <tbody>
                 <tr *ngFor="let message of threadMessages">
-                  <td *ngIf="message.sender.id === loggedInUser.id" style="text-align:right"><h4>{{message.sender.username}} <span class="label label-primary">{{message.message}}</span>
-                    <button *ngIf="message.id === message.threadId" (click)="deleteMessage(message.id)">DELETE THREAD</button>
-                    <button *ngIf="message.id !== message.threadId" (click)="deleteMessage(message.id)">DELETE MESSAGE</button></h4>
+                  <td *ngIf="message.sender.id === loggedInUser.id" style="text-align:right"><h4>{{message.sender.username}}</h4> <h4><br><span class="label label-primary">{{message.message}}</span>
+                    <button type="button" class="close" aria-label="Close" *ngIf="message.id === message.threadId" (click)="deleteMessage(message.id)"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" aria-label="Close" *ngIf="message.id !== message.threadId" (click)="deleteMessage(message.id)"><span aria-hidden="true">&times;</span></button></h4>
                   </td>
-                  <td *ngIf="message.sender.id !== loggedInUser.id" style="text-align:left"><h4>{{message.sender.username}} <span class="label label-success">{{message.message}}</span></h4></td>
+                  <td *ngIf="message.sender.id !== loggedInUser.id" style="text-align:left"><h4>{{message.sender.username}}</h4><h4><br> <span class="label label-success">{{message.message}}</span></h4></td>
                 </tr>
                 <tr>
                     <td>
                     <form>
-                      Reply: <input type="text" name="message" [(ngModel)]="reply.message">
+                      <input type="text" name="message" [(ngModel)]="reply.message">
                     </form>
-                    <button (click)="sendReply()">REPLY</button>
+                    <button type="button" class="btn btn-primary" (click)="sendReply()">REPLY</button>
                     </td>
                   </tr>
             </tbody>
@@ -68,7 +68,11 @@
             <tr *ngFor="let message of allMessages; let i = index" [attr.data-index]="i">
                 <td (click)="getThreadMessages(message.threadId)">{{message.sender.username}}</td>
                 <td (click)="getThreadMessages(message.threadId)">{{message.timeSent}}</td>
-                <td><button *ngIf="!showingThreadMessages[i].show" (click)="showNumberOfMessages(message.id)" type="button" class="btn btn-primary">Check Number Of Messages in Thread</button><span *ngIf="showingThreadMessages[i].show" class="label label-primary">{{showingThreadMessages[i].number}}</span></td>
+                <td>
+                  <button *ngIf="!showingThreadMessages[i].show" (click)="showNumberOfMessages(message.id)" type="button" class="btn btn-primary">Check Number Of Messages in Thread</button>
+                  <span *ngIf="showingThreadMessages[i].show" class="label label-primary">{{showingThreadMessages[i].number}}</span>
+                  <!-- *ngIf="showingThreadMessages[i].show" MAY NEED TO PUT THIS BACK IN SPAN IF THERE ARE PERFORMANCE ISSUES-->
+                </td>
             </tr>
           </tbody>
         </table>

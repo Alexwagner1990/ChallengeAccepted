@@ -1,3 +1,4 @@
+import { SearchComponent } from './search/search.component';
 import { InboxComponent } from './inbox/inbox.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
   {path: 'logout', component: LogoutComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'messages/:id', component: InboxComponent},
+  {path: 'search', component: SearchComponent},
   {path: 'about', component: AboutUsComponent},
   {path: '**', component: HomeComponent}
 

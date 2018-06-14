@@ -1,0 +1,69 @@
+<!--Change the background class to alter background image, options are: benches, boots, buildings, city, metro -->
+
+  <!-- ======== @Region: #content ======== -->
+    <!---->
+    <div class="showcase block block-border-bottom-grey">
+      <div class="container">
+        <h2 class="block-title">
+          Search for Challenges
+        </h2>
+        <mat-form-field>
+          <mat-select placeholder="Tags" [(ngModel)]="selectedTags" multiple>
+            <mat-option *ngFor="let tag of tags" [value]="tag">{{tag.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br>
+        <button type="button" class="btn btn-primary" (click)="searchChallengesByTags()">Search Challenges</button>
+        <div>
+          <div *ngFor="let schallenge of searchChallenges" class="col-md-4 text-center">
+            <span class="fa-stack fa-5x">
+              <img src="{{getIcons(schallenge.skill.name)}}"/>
+            </span>
+            <h4 class="text-weight-strong">
+              {{schallenge.name}}
+            </h4>
+            <p>{{schallenge.skill.name}}</p>
+              <p>
+                <a (click)="viewChallenge(schallenge.id)" class="btn btn-more i-right">View Challenge
+                  <i class="fa fa-angle-right"></i>
+                </a>
+              </p>
+            </div>
+            </div>
+        <div *ngIf="searchedYetChallenges && searchChallenges.length === 0">
+          <h3>No Challenges Found!</h3>
+        </div>
+        <hr>
+          <div class="row">
+              <h2 class="block-title">
+                Search for Users
+              </h2>
+              <mat-form-field>
+                  <mat-label>Username</mat-label>
+                <input matInput [(ngModel)]="username" placeholder="Username">
+              </mat-form-field>
+              <br>
+              <button type="button" class="btn btn-primary" (click)="searchUsersByUsername()">Search Users</button>
+              <div>
+                <div *ngFor="let user of searchUsers" class="col-md-4 text-center">
+                  <span class="fa-stack fa-5x">
+                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fa fa-group fa-stack-1x fa-inverse"></i>
+                  </span>
+                  <h4 class="text-weight-strong">
+                    {{user.username}}
+                  </h4>
+                    <p>
+                      <a (click)="viewUser(user.username)" class="btn btn-more i-right">View User
+                        <i class="fa fa-angle-right"></i>
+                      </a>
+                    </p>
+                  </div>
+              </div>
+              <div *ngIf="searchedYetUsers && searchUsers.length === 0">
+                <h3>No Users Found!</h3>
+              </div>
+          </div>
+          </div>
+        </div>
+      <!-- </div> -->

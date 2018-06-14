@@ -33,6 +33,8 @@ import { InboxService } from './inbox.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { FooterComponent } from './footer/footer.component';
+import { SearchComponent } from './search/search.component';
+import { SearchService } from './search.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ import { FooterComponent } from './footer/footer.component';
     CompletedStatusPipe,
     ChallengesAcceptedPipe,
     CompletedStatusPipe,
-    ChallengesCreatedPipe
+    ChallengesCreatedPipe,
+    SearchComponent
     ],
   imports: [
     BrowserModule,
@@ -80,7 +83,8 @@ import { FooterComponent } from './footer/footer.component';
     UserSkillService,
     AuthService,
     UserService,
-    InboxService],
+    InboxService,
+    SearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
